@@ -1,0 +1,86 @@
+import { useNavigation } from '@react-navigation/native';
+import React, { useState, useContext } from 'react';
+import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
+import { AuthContext } from '../../navigation/AuthProvider';
+import auth from '@react-native-firebase/auth';
+
+interface RegisterProps { }
+
+const RegisterScreen = (props: RegisterProps) => {
+    const [displayName, setDisplayName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassWord] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const navigation = useNavigation();
+    const { register } = useContext(AuthContext);
+
+    const registerUser = () => {
+        if (email === '' && password === '') {
+            Alert.alert('Enter details to signup!')
+        } else {
+            register(email, password, displayName);
+        }
+    }
+    return (
+        <View style={styles.container}>
+            <TextInput
+                style={styles.inputStyle}
+                placeholder="Name"
+                value={displayName}
+                onChangeText={(val) => setDisplayName(val)}
+            />
+            <TextInput
+                style={styles.inputStyle}
+                placeholder="Email"
+                value={email}
+                onChangeText={(val) => setEmail(val)}
+            />
+            <TextInput
+                style={styles.inputStyle}
+                placeholder="Password"
+                value={password}
+                onChangeText={(val) => setPassWord(val)}
+                maxLength={15}
+                secureTextEntry={true}
+            />
+            <Button
+                color="#3740FE"
+                title="Signup"
+                onPress={() => registerUser()}
+            />
+
+            <Text
+                style={styles.loginText}
+                onPress={() => navigation.navigate("Login")}>
+                Already Registered? Click here to login
+            </Text>
+        </View>
+    );
+};
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        padding: 35,
+        backgroundColor: '#fff'
+    },
+    inputStyle: {
+        width: '100%',
+        marginBottom: 15,
+        paddingBottom: 15,
+        alignSelf: "center",
+        borderColor: "#ccc",
+        borderBottomWidth: 1
+    },
+    loginText: {
+        color: '#3740FE',
+        marginTop: 25,
+        textAlign: 'center'
+    },
+});
+
+export default RegisterScreen;
