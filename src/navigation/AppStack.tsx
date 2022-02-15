@@ -1,16 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useContext, useState, useEffect} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
-    BottomTabBarProps,
-    createBottomTabNavigator,
+  BottomTabBarProps,
+  createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import HomeChatScreen from '../feature/chat/HomeChatScreen';
+import HomeChatScreen from '../feature/chat/screen/HomeChatScreen';
+import DetailsChat from '../feature/chat/screen/DetailsChatScreen';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-import { AuthContext } from './AuthProvider';
+import {AuthContext} from './AuthProvider';
 import AuthStack from './AuthStack';
 import auth from '@react-native-firebase/auth';
-
 
 // const ArrayTabs = [
 //   {
@@ -46,19 +47,22 @@ import auth from '@react-native-firebase/auth';
 //     );
 //   };
 const AppStack = () => (
-    <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-            headerShown: false
-        }}
-    >
-        <Stack.Screen
-            name="Chat"
-            component={HomeChatScreen}
-            options={{ title: 'Home Chat' }}
-        />
-
-    </Stack.Navigator>
+  <Stack.Navigator
+    initialRouteName="Home"
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <Stack.Screen
+      name="Chat"
+      component={HomeChatScreen}
+      options={{title: 'Home Chat'}}
+    />
+    <Stack.Screen
+      name="DetailsChat"
+      component={DetailsChat}
+      options={{title: 'Home Chat'}}
+    />
+  </Stack.Navigator>
 );
 
 export default AppStack;
