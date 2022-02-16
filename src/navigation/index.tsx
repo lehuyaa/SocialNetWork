@@ -1,13 +1,14 @@
 import React from 'react';
-import { AuthProvider } from './AuthProvider';
 import Routes from './Routes';
+import { store } from '../redux/store';
+import { Provider } from 'react-redux';
 
-const Providers = () => {
+const ProvidersNavigation = () => {
     return (
-        <AuthProvider>
+        <Provider store={store}>
             <Routes />
-        </AuthProvider>
+        </Provider>
     );
 };
 
-export default Providers;
+export default ProvidersNavigation;

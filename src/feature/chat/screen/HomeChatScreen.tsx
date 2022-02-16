@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, {useState, useContext} from 'react';
 import {
   Text,
   View,
@@ -7,21 +7,31 @@ import {
   SafeAreaView,
   Button,
 } from 'react-native';
-import { COLORS } from '../../../assets/Colors';
+import {COLORS} from '../../../assets/Colors';
 import ItemChat from '../component/ItemChat';
-import { useListUserHomeChat } from '../hook/useListUserHomeChat';
+import {useListUserHomeChat} from '../hook/useListUserHomeChat';
 import firestore from '@react-native-firebase/firestore';
-import { AuthContext } from '../../../navigation/AuthProvider';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import {useDispatch} from 'react-redux';
+import {logOut} from '../../../redux/slice/userInfoSlice';
 
-interface HomeChatScreenProps { }
+interface HomeChatScreenProps {}
 
 const HomeChatScreen = (props: HomeChatScreenProps) => {
-  const { data } = useListUserHomeChat();
+  const {data} = useListUserHomeChat();
   const navigation = useNavigation<any>();
-  const { user, logout } = useContext<any>(AuthContext);
+  const dispatch = useDispatch();
 
-  const renderItem = ({ item }) => {
+  const logout = async () => {
+    try {
+      await auth().signOut();
+      dispatch(logOut());
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const renderItem = ({item}) => {
     return (
       <ItemChat
         onPress={() => navigation.navigate('DetailsChat')}
@@ -35,7 +45,6 @@ const HomeChatScreen = (props: HomeChatScreenProps) => {
     const params = {
       displayName: 'adasdasd',
     };
-    console.log('user', user);
     firestore().collection('users').doc('êff').set(params);
   };
   return (

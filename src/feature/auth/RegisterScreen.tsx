@@ -1,8 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useContext } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
-import { AuthContext } from '../../navigation/AuthProvider';
 import auth from '@react-native-firebase/auth';
+import { setUserInfoFB } from '../../api/users';
+import { setUserInfo } from '../../redux/slice/userInfoSlice';
+import { useDispatch } from 'react-redux';
 
 interface RegisterProps { }
 
@@ -10,15 +12,27 @@ const RegisterScreen = (props: RegisterProps) => {
     const [displayName, setDisplayName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassWord] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
-    const navigation = useNavigation();
-    const { register } = useContext(AuthContext);
+    const navigation = useNavigation<any>();
+    const dispatch = useDispatch();
 
-    const registerUser = () => {
+    const registerUser = async () => {
         if (email === '' && password === '') {
             Alert.alert('Enter details to signup!')
         } else {
-            register(email, password, displayName);
+            try {
+                await auth().createUserWithEmailAndPassword(email, password);
+                const uid = auth().currentUser.uid;
+                const User = {
+                    displayName,
+                    email,
+                    avatar: '',
+                    uid,
+                };
+                setUserInfoFB(User, uid);
+                dispatch(setUserInfo(User));
+            } catch (e) {
+                console.log(e);
+            }
         }
     }
     return (

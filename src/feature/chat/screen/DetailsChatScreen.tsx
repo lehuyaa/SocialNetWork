@@ -1,40 +1,34 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {GiftedChat} from 'react-native-gifted-chat';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { GiftedChat } from 'react-native-gifted-chat';
+import { useDetailsChat } from '../hook/useDetailsChat';
+import firestore from '@react-native-firebase/firestore';
 
-interface DetailsChatProps {}
+interface DetailsChatProps { }
 
 const DetailsChat = (props: DetailsChatProps) => {
-  const [messages, setMessages] = useState([]);
+  const { data, setData } = useDetailsChat();
 
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
-  }, []);
 
   const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages =>
+    setData(previousMessages =>
       GiftedChat.append(previousMessages, messages),
     );
+    const { _id, createdAt, text, user } = messages[0];
+    firestore().collection('messages').add({
+      _id,
+      createdAt,
+      text,
+      user
+    });
   }, []);
   return (
     <GiftedChat
-      messages={messages}
+      messages={data}
       onSend={messages => onSend(messages)}
       user={{
         _id: 1,
       }}
-      // renderMessage={}
     />
   );
 };

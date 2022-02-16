@@ -1,31 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { generatePersistConfig } from '../../utils/helper';
-import { persistReducer } from 'redux-persist';
+import {createSlice} from '@reduxjs/toolkit';
+import {generatePersistConfig} from '../../utils/helper';
+import {persistReducer} from 'redux-persist';
 
-
-interface user {
-  uid?: string;
-  displayName?: string;
-  email?: string;
-}
-interface UserInfo {
-  user: user;
-}
-
-const initialState: UserInfo = {
-  user: {},
-};
+const initialState: any = {};
 
 const userInfoSlice = createSlice({
-  name: 'suggest',
+  name: 'userInfo',
   initialState,
   reducers: {
-    setUserInfo: (state, { payload }) => {
+    setUserInfo: (state, {payload}) => {
       state.user = payload;
+    },
+    logOut: state => {
+      delete state.user;
     },
   },
 });
-const persistConfig = generatePersistConfig('suggest', ['listSuggest']);
+const persistConfig = generatePersistConfig('userInfo', ['user']);
 
-export const { setUserInfo } = userInfoSlice.actions;
-export default persistReducer<UserInfo>(persistConfig, userInfoSlice.reducer);
+export const {setUserInfo, logOut} = userInfoSlice.actions;
+export default persistReducer<any>(persistConfig, userInfoSlice.reducer);

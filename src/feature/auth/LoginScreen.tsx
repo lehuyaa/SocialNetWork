@@ -1,8 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useContext } from 'react';
 import { Text, View, StyleSheet, Alert, TextInput, Button } from 'react-native';
-import { AuthContext } from '../../navigation/AuthProvider';
-import { useAuth } from '../../navigation/hooks/useAuth';
+import auth from '@react-native-firebase/auth';
+import { getUserInfoFB } from '../../api/users';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from '../../redux/slice/userInfoSlice';
 
 interface LoginScreenProps { }
 
@@ -10,14 +12,27 @@ const LoginScreen = (props: LoginScreenProps) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassWord] = useState<string>('');
     const navigation = useNavigation<any>();
+    const dispatch = useDispatch();
 
-    const { login } = useAuth();
 
-    const userLogin = () => {
+    const userLogin = async () => {
         if (email === '' && password === '') {
             Alert.alert('Enter details to signin!')
         } else {
-            login(email, password);
+            try {
+                await auth().signInWithEmailAndPassword(email, password);
+                const uid = auth().currentUser.uid;
+                const user: any = getUserInfoFB(uid);
+                const payload = {
+                    uid,
+                    displayName: user?.displayName,
+                    email: user?.email,
+                    avatar: user?.avatar,
+                }
+                dispatch(setUserInfo(payload));
+            } catch (e) {
+                console.log(e);
+            }
         }
     }
 

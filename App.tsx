@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import Providers from './src/navigation';
+import ProvidersNavigation from './src/navigation';
 
 const App = () => {
-  return <Providers />;
+  return <ProvidersNavigation />;
 };
 
 export default App;
