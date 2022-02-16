@@ -2,15 +2,16 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useContext } from 'react';
 import { Text, View, StyleSheet, Alert, TextInput, Button } from 'react-native';
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useAuth } from '../../navigation/hooks/useAuth';
 
 interface LoginScreenProps { }
 
 const LoginScreen = (props: LoginScreenProps) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassWord] = useState<string>('');
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
 
-    const { login, loading } = useContext(AuthContext);
+    const { login } = useAuth();
 
     const userLogin = () => {
         if (email === '' && password === '') {
