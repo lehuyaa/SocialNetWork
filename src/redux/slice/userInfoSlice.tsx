@@ -16,7 +16,7 @@ const userInfoSlice = createSlice({
     },
   },
 });
-const persistConfig = generatePersistConfig('userInfo', ['user']);
+// const persistConfig = generatePersistConfig('userInfo', ['user']);
 
 export const {setUserInfo, logOut} = userInfoSlice.actions;
-export default persistReducer<any>(persistConfig, userInfoSlice.reducer);
+// export default persistReducer<any>(persistConfig, userInfoSlice.reducer);

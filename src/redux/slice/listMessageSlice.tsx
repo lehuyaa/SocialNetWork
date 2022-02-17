@@ -1,23 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { generatePersistConfig } from '../../utils/helper';
-import { persistReducer } from 'redux-persist';
-
-
+import {createSlice} from '@reduxjs/toolkit';
+import {generatePersistConfig} from '../../utils/helper';
+import {persistReducer} from 'redux-persist';
 
 const initialState: any = {
-    messages: [],
+  messages: [],
 };
 
 const listMessageSlice = createSlice({
-    name: 'listMessage',
-    initialState,
-    reducers: {
-        setMessages: (state, { payload }) => {
-            state.messages = payload;
-        },
+  name: 'listMessage',
+  initialState,
+  reducers: {
+    setMessages: (state, {payload}) => {
+      state.messages = payload;
     },
+  },
 });
-const persistConfig = generatePersistConfig('listMessage', ['messages']);
+// const persistConfig = generatePersistConfig('listMessage', ['messages']);
 
-export const { setMessages } = listMessageSlice.actions;
-export default persistReducer<any>(persistConfig, listMessageSlice.reducer);
+export const {setMessages} = listMessageSlice.actions;
+// export default persistReducer<any>(persistConfig, listMessageSlice.reducer);

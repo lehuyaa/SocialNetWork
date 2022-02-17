@@ -13,7 +13,7 @@ import {useListUserHomeChat} from '../hook/useListUserHomeChat';
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {logOut} from '../../../redux/slice/userInfoSlice';
 
 interface HomeChatScreenProps {}
@@ -22,6 +22,7 @@ const HomeChatScreen = (props: HomeChatScreenProps) => {
   const {data} = useListUserHomeChat();
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
+  // const {listMessage} = useSelector((state: any) => state);
 
   const logout = async () => {
     try {
@@ -41,11 +42,14 @@ const HomeChatScreen = (props: HomeChatScreenProps) => {
       />
     );
   };
+  console.log('listMessage');
+
   const userLogin = () => {
-    const params = {
-      displayName: 'adasdasd',
-    };
-    firestore().collection('users').doc('êff').set(params);
+    // const params = {
+    //   displayName: 'adasdasd',
+    // };
+    // firestore().collection('users').doc('êff').set(params);
+    console.log('listMessage');
   };
   return (
     <SafeAreaView style={styles.container}>
