@@ -1,12 +1,11 @@
-import { useLayoutEffect, useState } from 'react';
+import {useLayoutEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { useDispatch, useSelector } from 'react-redux';
-import { addListRoomChat } from '../../../redux/slice/roomChatSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {addListRoomChat} from '../../../redux/slice/roomChatSlice';
 
 export const useListUserHomeChat = () => {
-
-  const { roomChat } = useSelector((state: any) => state);
-  const { user } = useSelector((state: any) => state.userInfo);
+  const {roomChat} = useSelector((state: any) => state);
+  const {user} = useSelector((state: any) => state.userInfo);
 
   const dispatch = useDispatch();
 
@@ -15,7 +14,7 @@ export const useListUserHomeChat = () => {
   const fetchData = () => {
     return firestore()
       .collection('users')
-      .where("uid", "!=", user.uid)
+      .where('uid', '!=', user.uid)
       .onSnapshot(querySnapshot => {
         const threads = querySnapshot?.docs?.map(documentSnapshot => {
           return {

@@ -1,41 +1,32 @@
-
-import { useLayoutEffect, useState } from 'react';
+import {useLayoutEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { useDispatch, useSelector } from 'react-redux';
-import { setMessages } from '../../../redux/slice/listMessageSlice';
-
 
 export const useDetailsChat = () => {
+  const [data, setData] = useState([]);
 
-    const { listMessage } = useSelector((state: any) => state);
+  const fetchData = () => {
+    return firestore()
+      .collection('messages')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(querySnapshot => {
+        const threads = querySnapshot.docs.map(doc => ({
+          _id: doc.data()._id,
+          createdAt: doc.data().createdAt.toDate(),
+          text: doc.data().text,
+          user: doc.data().user,
+        }));
+        setData(threads);
+      });
+  };
+  useLayoutEffect(() => {
+    const unsubscribe = fetchData();
 
-    const [data, setData] = useState(listMessage?.messages);
-    const dispatch = useDispatch();
+    return () => unsubscribe();
+  });
 
-    const fetchData = () => {
-        return firestore()
-            .collection('messages')
-            .onSnapshot(querySnapshot => {
-                const threads = querySnapshot.docs.map(doc => ({
-                    _id: doc.data()._id,
-                    createdAt: doc.data().createdAt.toDate(),
-                    text: doc.data().text,
-                    user: doc.data().user
-                }))
-                dispatch(setMessages(threads));
-
-                setData(threads);
-            });
-    };
-    useLayoutEffect(() => {
-        const unsubscribe = fetchData();
-
-        return () => unsubscribe();
-    });
-
-    return {
-        setData,
-        data,
-        fetchData,
-    };
-}
+  return {
+    setData,
+    data,
+    fetchData,
+  };
+};

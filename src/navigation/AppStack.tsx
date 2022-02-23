@@ -9,7 +9,6 @@ import DetailsChat from '../feature/chat/screen/DetailsChatScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-import {AuthContext} from './AuthProvider';
 import AuthStack from './AuthStack';
 import auth from '@react-native-firebase/auth';
 

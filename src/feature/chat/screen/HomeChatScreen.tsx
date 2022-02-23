@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -31,6 +31,7 @@ const HomeChatScreen = (props: HomeChatScreenProps) => {
       console.error(e);
     }
   };
+
   const renderItem = ({item}) => {
     return (
       <ItemChat
@@ -41,12 +42,7 @@ const HomeChatScreen = (props: HomeChatScreenProps) => {
       />
     );
   };
-  const userLogin = () => {
-    const params = {
-      displayName: 'adasdasd',
-    };
-    firestore().collection('users').doc('êff').set(params);
-  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -56,7 +52,6 @@ const HomeChatScreen = (props: HomeChatScreenProps) => {
           keyExtractor={(item, index) => index.toString()}
           showsVerticalScrollIndicator={false}
         />
-        <Button color="#3740FE" title="Signin" onPress={() => userLogin()} />
         <Button color="#3740FE" title="logout" onPress={() => logout()} />
       </View>
     </SafeAreaView>
